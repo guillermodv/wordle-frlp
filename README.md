@@ -38,7 +38,7 @@ npx expo start
 
 - Escaneá el QR con Expo Go desde tu teléfono (Android/iOS) o abrí en emulador.
 
-🧠 Cómo jugar
+## 🧠 Cómo jugar
 Adiviná una palabra de 5 letras en 6 intentos.
 
 Colores:
