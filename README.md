@@ -1,50 +1,51 @@
-# Welcome to your Expo app 👋
+# 🟩 Wordle Clone - App en React Native (Expo)
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Una aplicación móvil que replica el famoso juego **Wordle**, desarrollada con **React Native** usando **Expo**. Incluye lógica de validación, estadísticas locales, modo oscuro y animaciones suaves.
 
-## Get started
+---
 
-1. Install dependencies
+## 🚀 Funcionalidades
 
-   ```bash
-   npm install
-   ```
+- ✅ Palabras aleatorias de una lista.
+- ✅ Validación contra un diccionario.
+- ✅ Estadísticas (victorias / derrotas).
+- ✅ Soporte de modo oscuro.
+- ✅ Teclado virtual propio.
+- ✅ Animaciones al interactuar.
 
-2. Start the app
+---
 
-   ```bash
-   npx expo start
-   ```
+## 🛠️ Requisitos
 
-In the output, you'll find options to open the app in a
+- Node.js >= 18
+- Expo CLI (`npm install -g expo-cli`)
+- Dispositivo físico o emulador Android/iOS
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+---
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+## ▶️ Cómo correr el proyecto
 
-## Get a fresh project
+- **Cloná o descomprimí** el repositorio ZIP.
 
-When you're ready, run:
+- Abrí una terminal en la carpeta del proyecto:
+cd wordle-clone
 
-```bash
-npm run reset-project
-```
+- Instalá dependencias si es necesario:
+npm install
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+- Iniciá el proyecto:
+npx expo start
 
-## Learn more
+- Escaneá el QR con Expo Go desde tu teléfono (Android/iOS) o abrí en emulador.
 
-To learn more about developing your project with Expo, look at the following resources:
+🧠 Cómo jugar
+Adiviná una palabra de 5 letras en 6 intentos.
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+Colores:
 
-## Join the community
+🟩 Verde: letra correcta y en la posición correcta.
 
-Join our community of developers creating universal apps.
+🟨 Amarillo: letra está en la palabra pero en otra posición.
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+⬛ Gris: letra no está en la palabra.
+

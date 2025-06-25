@@ -20,20 +20,23 @@ export default function App() {
   const [currentCol, setCurrentCol] = useState(0);
   const [gameOver, setGameOver] = useState(false);
 
-  const handleKeyPress = (key) => {
+  interface GridType extends Array<string[]> {}
+  interface ColorsType extends Array<string[]> {}
+
+  const handleKeyPress = (key: string): void => {
     if (gameOver) return;
 
     if (key === '←') {
       if (currentCol > 0) {
-        const newGrid = [...grid];
+        const newGrid: GridType = [...grid];
         newGrid[currentRow][currentCol - 1] = '';
         setGrid(newGrid);
         setCurrentCol(currentCol - 1);
       }
     } else if (key === 'OK') {
       if (currentCol === cols) {
-        const guess = grid[currentRow].join('');
-        const newColors = [...colors];
+        const guess: string = grid[currentRow].join('');
+        const newColors: ColorsType = [...colors];
         for (let i = 0; i < cols; i++) {
           if (guess[i] === WORD[i]) {
             newColors[currentRow][i] = 'green';
@@ -57,7 +60,7 @@ export default function App() {
       }
     } else {
       if (currentCol < cols) {
-        const newGrid = [...grid];
+        const newGrid: GridType = [...grid];
         newGrid[currentRow][currentCol] = key;
         setGrid(newGrid);
         setCurrentCol(currentCol + 1);
@@ -73,7 +76,7 @@ export default function App() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>Wordle Clone</Text>
+      <Text style={styles.title}>Wordle Frlp</Text>
 
       <View style={styles.grid}>
         {grid.map((row, rowIndex) => (
@@ -143,7 +146,8 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   keyboard: {
-    marginTop: 20,
+    margin: 20,
+    width: '50%',
   },
   keyRow: {
     flexDirection: 'row',
@@ -158,7 +162,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
   },
   keyText: {
-    fontSize: 16,
+    fontSize: 10,
     fontWeight: 'bold',
     color: 'white',
   },
