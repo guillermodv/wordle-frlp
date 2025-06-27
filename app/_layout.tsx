@@ -1,7 +1,7 @@
-import { Stack } from 'expo-router';
-import { AuthProvider, useAuth } from '../context/AuthContext';
+import { SplashScreen, Stack, useRouter, useSegments } from 'expo-router';
 import { useEffect } from 'react';
-import { SplashScreen, useRouter, useSegments } from 'expo-router';
+import { AuthProvider, useAuth } from '../context/AuthContext';
+import { ScoreProvider } from '../context/ScoreContext';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -18,10 +18,8 @@ const InitialLayout = () => {
       const inAuthGroup = segments[0] === '(auth)';
 
       if (user && inAuthGroup) {
-        // User is authenticated, but in auth group, redirect to home
         router.replace('/');
       } else if (!user && !inAuthGroup) {
-        // User is not authenticated, and not in auth group, redirect to login
         router.replace('/login');
       }
     }
@@ -38,7 +36,9 @@ const InitialLayout = () => {
 export default function RootLayout() {
   return (
     <AuthProvider>
-      <InitialLayout />
+      <ScoreProvider>
+        <InitialLayout />
+      </ScoreProvider>
     </AuthProvider>
   );
 }

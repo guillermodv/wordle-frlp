@@ -1,9 +1,9 @@
+import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import {
   Alert,
   Image,
   KeyboardAvoidingView,
-  Platform,
   SafeAreaView,
   StyleSheet,
   Text,
@@ -11,6 +11,7 @@ import {
   View
 } from 'react-native';
 import { useAuth } from '../../context/AuthContext';
+import { useScore } from '../../context/ScoreContext';
 
 const WORD = 'PERRO'; // Palabra a adivinar (puedes cambiarla)
 
@@ -25,6 +26,8 @@ export default function App() {
   const [gameOver, setGameOver] = useState(false);
 
   const { user, logout } = useAuth();
+  const { addScore } = useScore();
+  const router = useRouter();
 
   const handleKeyPress = (key: string) => {
     if (gameOver) return;
@@ -51,7 +54,11 @@ export default function App() {
         }
         setColors(newColors);
         if (guess === WORD) {
-          Alert.alert('¡Ganaste!', 'Adivinaste la palabra');
+          const score = (rows - currentRow) * 100; // Score based on remaining rows
+          Alert.alert('¡Ganaste!', `Adivinaste la palabra en ${currentRow + 1} intentos! Puntos: ${score}`);
+          if (user) {
+            addScore(user.username, score);
+          }
           setGameOver(true);
         } else if (currentRow === rows - 1) {
           Alert.alert('Perdiste', `La palabra era ${WORD}`);
@@ -89,6 +96,9 @@ export default function App() {
           {user && <Text style={styles.usernameText}>Hola, {user.username}!</Text>}
           <TouchableOpacity style={styles.logoutButton} onPress={logout}>
             <Text style={styles.logoutButtonText}>Salir</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.leaderboardButton} onPress={() => router.push('/(tabs)/leaderboard')}>
+            <Text style={styles.leaderboardButtonText}>Best</Text>
           </TouchableOpacity>
         </View>
 
@@ -131,13 +141,12 @@ export default function App() {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: Platform.OS === 'ios' ? 0 : 40,
     flex: 1,
     backgroundColor: '#121213',
     alignItems: 'center',
   },
   header: {
-    marginTop: 20,
+    marginTop: 50,
     flexDirection: 'row',
     alignItems: 'center',
     width: '90%',
@@ -162,6 +171,18 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   logoutButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 12
+  },
+  leaderboardButton: {
+    backgroundColor: '#4CAF50',
+    paddingVertical: 8,
+    paddingHorizontal: 10,
+    marginLeft: 10,
+    borderRadius: 20,
+  },
+  leaderboardButtonText: {
     color: 'white',
     fontWeight: 'bold',
     fontSize: 12
