@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
 import {
   Alert,
+  Image,
+  KeyboardAvoidingView,
+  Platform,
   SafeAreaView,
   StyleSheet,
   Text,
   TouchableOpacity,
-  View,
+  View
 } from 'react-native';
+import { useAuth } from '../../context/AuthContext';
 
 const WORD = 'PERRO'; // Palabra a adivinar (puedes cambiarla)
 
@@ -20,7 +24,9 @@ export default function App() {
   const [currentCol, setCurrentCol] = useState(0);
   const [gameOver, setGameOver] = useState(false);
 
-  const handleKeyPress = (key) => {
+  const { user, logout } = useAuth();
+
+  const handleKeyPress = (key: string) => {
     if (gameOver) return;
 
     if (key === '←') {
@@ -73,48 +79,92 @@ export default function App() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>Wordle Clone</Text>
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior="padding"
+        keyboardVerticalOffset={0}
+      >
+        <View style={styles.header}>
+          <Image source={require('../../assets/images/logo.png')} style={styles.logo} />
+          {user && <Text style={styles.usernameText}>Hola, {user.username}!</Text>}
+          <TouchableOpacity style={styles.logoutButton} onPress={logout}>
+            <Text style={styles.logoutButtonText}>Salir</Text>
+          </TouchableOpacity>
+        </View>
 
-      <View style={styles.grid}>
-        {grid.map((row, rowIndex) => (
-          <View key={rowIndex} style={styles.row}>
-            {row.map((letter, colIndex) => (
-              <View
-                key={colIndex}
-                style={[styles.cell, { backgroundColor: colors[rowIndex][colIndex] }]}
-              >
-                <Text style={styles.cellText}>{letter}</Text>
-              </View>
-            ))}
-          </View>
-        ))}
-      </View>
+        <Text style={styles.title}>Wordle Clone</Text>
 
-      <View style={styles.keyboard}>
-        {keyboard.map((row, rowIndex) => (
-          <View key={rowIndex} style={styles.keyRow}>
-            {row.map((key) => (
-              <TouchableOpacity
-                key={key}
-                style={styles.key}
-                onPress={() => handleKeyPress(key)}
-              >
-                <Text style={styles.keyText}>{key}</Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-        ))}
-      </View>
+        <View style={styles.grid}>
+          {grid.map((row, rowIndex) => (
+            <View key={rowIndex} style={styles.row}>
+              {row.map((letter, colIndex) => (
+                <View
+                  key={colIndex}
+                  style={[styles.cell, { backgroundColor: colors[rowIndex][colIndex] }]}
+                >
+                  <Text style={styles.cellText}>{letter}</Text>
+                </View>
+              ))}
+            </View>
+          ))}
+        </View>
+
+        <View style={styles.keyboard}>
+          {keyboard.map((row, rowIndex) => (
+            <View key={rowIndex} style={styles.keyRow}>
+              {row.map((key) => (
+                <TouchableOpacity
+                  key={key}
+                  style={styles.key}
+                  onPress={() => handleKeyPress(key)}
+                >
+                  <Text style={styles.keyText}>{key}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          ))}
+        </View>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    marginTop: Platform.OS === 'ios' ? 0 : 40,
     flex: 1,
     backgroundColor: '#121213',
     alignItems: 'center',
-    paddingTop: 50,
+  },
+  header: {
+    marginTop: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: '90%',
+    marginBottom: 30,
+  },
+  logo: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+  },
+  usernameText: {
+    color: 'white',
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginLeft: 5,
+  },
+  logoutButton: {
+    backgroundColor: '#74dada',
+    paddingVertical: 8,
+    paddingHorizontal: 10,
+    marginLeft: 40,
+    borderRadius: 20,
+  },
+  logoutButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 12
   },
   title: {
     fontSize: 32,
@@ -143,19 +193,19 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   keyboard: {
-    marginTop: 20,
+    marginTop: 10,
   },
   keyRow: {
     flexDirection: 'row',
     justifyContent: 'center',
-    marginBottom: 8,
+    marginBottom: 0,
   },
   key: {
     backgroundColor: '#818384',
     margin: 3,
-    paddingVertical: 10,
-    paddingHorizontal: 12,
-    borderRadius: 4,
+    paddingVertical: 3,
+    paddingHorizontal: 5,
+    borderRadius: 2,
   },
   keyText: {
     fontSize: 16,
