@@ -1,26 +1,36 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Image, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, KeyboardAvoidingView, Platform } from 'react-native';
+import GenericModal from '../../components/GenericModal';
 import { useAuth } from '../../context/AuthContext';
 import { useRouter } from 'expo-router';
 
 export default function RegisterScreen() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalTitle, setModalTitle] = useState('');
+  const [modalMessage, setModalMessage] = useState('');
   const { register } = useAuth();
   const router = useRouter();
 
   const handleRegister = async () => {
     if (!username || !password) {
-      Alert.alert('Error', 'Por favor, ingresa usuario y contraseña.');
+      setModalTitle('Error');
+      setModalMessage('Por favor, ingresa usuario y contraseña.');
+      setModalVisible(true);
       return;
     }
 
     const success = await register(username, password);
     if (success) {
-      Alert.alert('Registro Exitoso', 'Usuario registrado correctamente.');
-      router.replace('/login'); // Redirect to login after successful registration
+      setModalTitle('Registro Exitoso');
+      setModalMessage('Usuario registrado correctamente.');
+      setModalVisible(true);
+      // router.replace('/login'); // Redirect to login after successful registration
     } else {
-      Alert.alert('Error', 'El usuario ya existe o hubo un error en el registro.');
+      setModalTitle('Error');
+      setModalMessage('El usuario ya existe o hubo un error en el registro.');
+      setModalVisible(true);
     }
   };
 
@@ -55,6 +65,17 @@ export default function RegisterScreen() {
       <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
         <Text style={styles.backButtonText}>Volver al Login</Text>
       </TouchableOpacity>
+      <GenericModal
+        visible={modalVisible}
+        title={modalTitle}
+        message={modalMessage}
+        onClose={() => {
+          setModalVisible(false);
+          if (modalTitle === 'Registro Exitoso') {
+            router.replace('/login');
+          }
+        }}
+      />
     </KeyboardAvoidingView>
   );
 }

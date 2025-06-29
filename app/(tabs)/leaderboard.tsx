@@ -24,7 +24,7 @@ export default function LeaderboardScreen() {
         renderItem={({ item, index }) => (
           <View style={styles.scoreItem}>
             <Text style={styles.scoreRank}>#{index + 1}</Text>
-            <Text style={styles.scoreText}>{item.username}: {item.score} puntos</Text>
+            <Text style={styles.scoreText}>{item.username}: {item.score} puntos - {new Date(item.timestamp).toLocaleDateString()}</Text>
           </View>
         )}
         ListEmptyComponent={<Text style={styles.emptyText}>No hay puntuaciones aún.</Text>}

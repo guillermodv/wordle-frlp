@@ -1,17 +1,23 @@
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
-import { Alert, Image, KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableOpacity } from 'react-native';
+import { Image, KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableOpacity } from 'react-native';
+import GenericModal from '../../components/GenericModal';
 import { useAuth } from '../../context/AuthContext';
 
 export default function LoginScreen() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalTitle, setModalTitle] = useState('');
+  const [modalMessage, setModalMessage] = useState('');
   const { login } = useAuth();
   const router = useRouter();
 
   const handleLogin = async () => {
     if (!username || !password) {
-      Alert.alert('Error', 'Por favor, ingresa usuario y contraseña.');
+      setModalTitle('Error');
+      setModalMessage('Por favor, ingresa usuario y contraseña.');
+      setModalVisible(true);
       return;
     }
 
@@ -19,7 +25,9 @@ export default function LoginScreen() {
     if (success) {
       router.replace('/'); // Redirect to home after successful login
     } else {
-      Alert.alert('Error', 'Credenciales inválidas.');
+      setModalTitle('Error');
+      setModalMessage('Credenciales inválidas.');
+      setModalVisible(true);
     }
   };
 
@@ -51,9 +59,15 @@ export default function LoginScreen() {
       <TouchableOpacity style={styles.button} onPress={handleLogin}>
         <Text style={styles.buttonText}>Ingresar</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.registerButton} onPress={() => router.push('/register')}>
+      <TouchableOpacity style={styles.registerButton} onPress={() => router.push('/(auth)/register')}>
         <Text style={styles.registerButtonText}>Registrarse</Text>
       </TouchableOpacity>
+      <GenericModal
+        visible={modalVisible}
+        title={modalTitle}
+        message={modalMessage}
+        onClose={() => setModalVisible(false)}
+      />
     </KeyboardAvoidingView>
   );
 }
