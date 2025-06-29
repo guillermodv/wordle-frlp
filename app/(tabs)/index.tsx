@@ -1,3 +1,7 @@
+import GenericModal from '@/components/GenericModal';
+import { useAuth } from '@/context/AuthContext';
+import { useScore } from '@/context/ScoreContext';
+import { WORD_LIST } from '@/data/words';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import {
@@ -9,11 +13,8 @@ import {
   TouchableOpacity,
   View
 } from 'react-native';
-import GenericModal from '../../components/GenericModal';
-import { useAuth } from '../../context/AuthContext';
-import { useScore } from '../../context/ScoreContext';
 
-const WORD = 'PERRO'; // Palabra a adivinar (puedes cambiarla)
+const WORD = WORD_LIST[Math.floor(Math.random() * WORD_LIST.length)]; 
 
 const rows = 6;
 const cols = 5;
@@ -68,7 +69,7 @@ export default function App() {
         }
         setColors(newColors);
         if (guess === WORD) {
-          const score = (rows - currentRow) * 100; // Score based on remaining rows
+          const score = (rows - currentRow) * 100; 
           setModalTitle('¡Ganaste!');
           setModalMessage(`Adivinaste la palabra en ${currentRow + 1} intentos! Puntos: ${score}`);
           setModalVisible(true);
@@ -154,8 +155,8 @@ export default function App() {
           ))}
         </View>
 
-        <TouchableOpacity style={styles.restartButton} onPress={handleRestartGame}>
-          <Text style={styles.restartButtonText}>⟳</Text>
+        <TouchableOpacity style={styles.key} onPress={handleRestartGame}>
+          <Text style={{ ...styles.keyText, textAlign: 'center' }}>⟳</Text>
         </TouchableOpacity>
       </KeyboardAvoidingView>
       <GenericModal
@@ -257,13 +258,13 @@ const styles = StyleSheet.create({
   },
   key: {
     backgroundColor: '#818384',
-    margin: 3,
+    margin: 2,
     paddingVertical: 3,
     paddingHorizontal: 5,
     borderRadius: 2,
   },
   keyText: {
-    fontSize: 17,
+    fontSize: 18,
     fontWeight: 'bold',
     color: 'white',
   },
