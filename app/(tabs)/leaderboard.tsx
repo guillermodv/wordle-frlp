@@ -11,7 +11,7 @@ export default function LeaderboardScreen() {
     loadScores();
   }, []);
 
-  const sortedScores = [...scores].sort((a, b) => b.score - a.score);
+  const sortedScores = [...scores].sort((a, b) => b.score - a.score).slice(0, 10);
 
   return (
     <SafeAreaView style={styles.container}>

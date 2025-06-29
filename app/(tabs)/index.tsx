@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   header: {
-    marginTop: 50,
+    marginTop: 60,
     flexDirection: 'row',
     alignItems: 'center',
     width: '90%',
@@ -229,7 +229,7 @@ const styles = StyleSheet.create({
     borderRadius: 2,
   },
   keyText: {
-    fontSize: 16,
+    fontSize: 17,
     fontWeight: 'bold',
     color: 'white',
   },

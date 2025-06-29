@@ -3,7 +3,6 @@ import { useEffect } from 'react';
 import { AuthProvider, useAuth } from '../context/AuthContext';
 import { ScoreProvider } from '../context/ScoreContext';
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 const InitialLayout = () => {
