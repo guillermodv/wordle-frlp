@@ -1,7 +1,6 @@
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import {
-  Alert,
   Image,
   KeyboardAvoidingView,
   SafeAreaView,
@@ -10,6 +9,7 @@ import {
   TouchableOpacity,
   View
 } from 'react-native';
+import GenericModal from '../../components/GenericModal';
 import { useAuth } from '../../context/AuthContext';
 import { useScore } from '../../context/ScoreContext';
 
@@ -24,10 +24,24 @@ export default function App() {
   const [currentRow, setCurrentRow] = useState(0);
   const [currentCol, setCurrentCol] = useState(0);
   const [gameOver, setGameOver] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalTitle, setModalTitle] = useState('');
+  const [modalMessage, setModalMessage] = useState('');
+  const [gameWon, setGameWon] = useState(false);
 
   const { user, logout } = useAuth();
   const { addScore } = useScore();
   const router = useRouter();
+
+  const handleRestartGame = () => {
+    setGrid(Array(rows).fill('').map(() => Array(cols).fill('')));
+    setColors(Array(rows).fill('').map(() => Array(cols).fill('gray')));
+    setCurrentRow(0);
+    setCurrentCol(0);
+    setGameOver(false);
+    setModalVisible(false);
+    setGameWon(false);
+  };
 
   const handleKeyPress = (key: string) => {
     if (gameOver) return;
@@ -55,13 +69,18 @@ export default function App() {
         setColors(newColors);
         if (guess === WORD) {
           const score = (rows - currentRow) * 100; // Score based on remaining rows
-          Alert.alert('¡Ganaste!', `Adivinaste la palabra en ${currentRow + 1} intentos! Puntos: ${score}`);
+          setModalTitle('¡Ganaste!');
+          setModalMessage(`Adivinaste la palabra en ${currentRow + 1} intentos! Puntos: ${score}`);
+          setModalVisible(true);
           if (user) {
             addScore(user.username, score);
           }
           setGameOver(true);
+          setGameWon(true);
         } else if (currentRow === rows - 1) {
-          Alert.alert('Perdiste', `La palabra era ${WORD}`);
+          setModalTitle('Perdiste');
+          setModalMessage(`La palabra era ${WORD}`);
+          setModalVisible(true);
           setGameOver(true);
         } else {
           setCurrentRow(currentRow + 1);
@@ -134,7 +153,22 @@ export default function App() {
             </View>
           ))}
         </View>
+
+        <TouchableOpacity style={styles.restartButton} onPress={handleRestartGame}>
+          <Text style={styles.restartButtonText}>⟳</Text>
+        </TouchableOpacity>
       </KeyboardAvoidingView>
+      <GenericModal
+        visible={modalVisible}
+        title={modalTitle}
+        message={modalMessage}
+        onClose={() => {
+          setModalVisible(false);
+          if (gameWon) {
+            handleRestartGame();
+          }
+        }}
+      />
     </SafeAreaView>
   );
 }
