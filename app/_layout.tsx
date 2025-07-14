@@ -22,7 +22,7 @@ const InitialLayout = () => {
         router.replace('/login');
       }
     }
-  }, [user, loading, segments]);
+  }, [user, loading, segments, router]);
 
   return (
     <Stack>

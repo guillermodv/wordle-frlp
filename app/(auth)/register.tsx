@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, KeyboardAvoidingView, Platform } from 'react-native';
+import { Text, TextInput, TouchableOpacity, StyleSheet, Image, KeyboardAvoidingView, Platform } from 'react-native';
 import GenericModal from '../../components/GenericModal';
 import { useAuth } from '../../context/AuthContext';
 import { useRouter } from 'expo-router';

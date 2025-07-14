@@ -1,15 +1,13 @@
-import { useRouter } from 'expo-router';
 import React, { useEffect } from 'react';
 import { FlatList, SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import { useScore } from '../../context/ScoreContext';
 
 export default function LeaderboardScreen() {
   const { scores, loadScores } = useScore();
-  const router = useRouter();
 
   useEffect(() => {
     loadScores();
-  }, []);
+  }, [loadScores]);
 
   const sortedScores = [...scores].sort((a, b) => b.score - a.score).slice(0, 10);
 
@@ -24,7 +22,11 @@ export default function LeaderboardScreen() {
         renderItem={({ item, index }) => (
           <View style={styles.scoreItem}>
             <Text style={styles.scoreRank}>#{index + 1}</Text>
-            <Text style={styles.scoreText}>{item.username}: {item.score} puntos - {new Date(item.timestamp).toLocaleDateString()}</Text>
+            <View style={styles.scoreDetails}>
+              <Text style={styles.usernameText}>{item.username}</Text>
+              <Text style={styles.dateText}>{new Date(item.timestamp).toLocaleDateString()}</Text>
+            </View>
+            <Text style={styles.scorePoints}>{item.score} puntos</Text>
           </View>
         )}
         ListEmptyComponent={<Text style={styles.emptyText}>No hay puntuaciones aún.</Text>}
@@ -75,10 +77,25 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     color: '#61dafb',
+    marginRight: 10,
   },
-  scoreText: {
-    fontSize: 18,
+  scoreDetails: {
+    flex: 1,
+  },
+  usernameText: {
     color: 'white',
+    fontWeight: 'bold',
+    textTransform: 'uppercase',
+    fontSize: 16,
+  },
+  dateText: {
+    color: '#ccc',
+    fontSize: 12,
+  },
+  scorePoints: {
+    color: 'red',
+    fontSize: 18,
+    fontWeight: 'bold',
   },
   emptyText: {
     color: '#ccc',

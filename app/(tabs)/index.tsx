@@ -113,7 +113,7 @@ export default function App() {
       >
         <View style={styles.header}>
           <Image source={require('../../assets/images/logo.png')} style={styles.logo} />
-          {user && <Text style={styles.usernameText}>Hola, {user.username}!</Text>}
+          {user && <Text style={styles.usernameText}>Hola, {user.username.length > 4 ? `${user.username.substring(0, 4)}...` : user.username}!</Text>}
           <TouchableOpacity style={styles.logoutButton} onPress={logout}>
             <Text style={styles.logoutButtonText}>Salir</Text>
           </TouchableOpacity>
@@ -122,7 +122,7 @@ export default function App() {
           </TouchableOpacity>
         </View>
 
-        <Text style={styles.title}>Wordle Clone</Text>
+        <Text style={styles.title}>Wordle UTN FRLP</Text>
 
         <View style={styles.grid}>
           {grid.map((row, rowIndex) => (

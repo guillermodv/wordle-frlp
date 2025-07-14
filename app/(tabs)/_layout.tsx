@@ -2,11 +2,8 @@ import { Tabs } from 'expo-router';
 import React from 'react';
 
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
-import { useColorScheme } from '@/hooks/useColorScheme';
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
-
   return (
     <Tabs
       screenOptions={{
@@ -18,6 +15,24 @@ export default function TabLayout() {
           title: 'WordleFRLP',
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="leaderboard"
+        options={{
+          title: 'Maximos Jugadores',
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon name={focused ? 'trophy' : 'trophy-outline'} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="help"
+        options={{
+          title: 'Ayuda',
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon name={focused ? 'help-circle' : 'help-circle-outline'} color={color} />
           ),
         }}
       />
